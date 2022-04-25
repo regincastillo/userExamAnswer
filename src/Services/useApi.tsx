@@ -1,4 +1,4 @@
-import { Config } from 'Utils/Config'
+import { Config } from 'Utils/Constants/Config'
 import axios from "axios"
 import {UseApiParams} from './type.d'
 

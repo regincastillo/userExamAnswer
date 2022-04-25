@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import Routes from "@Routes/Routes";
 import "./App.css";
 import { ThemeProvider } from '@mui/material/styles';
-import CustomTheme from '@Utils/ThemesConfig'
+import CustomTheme from '@Utils/Constants/ThemesConfig'
 
 function App(): ReactElement {
   return (

@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import { chartOption, chartDatasets, labels } from "@Utils/ChartConfig";
+import { chartOption, chartDatasets, labels } from "@Utils/Constants/ChartConfig";
 import {
   Chart as ChartJS,
   CategoryScale,

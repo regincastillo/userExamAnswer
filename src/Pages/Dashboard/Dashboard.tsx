@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import Chart from "@Components/Chart/Chart";
 import { Grid } from "@mui/material";
 import { Wrapper } from "@Components/Wrapper/Wrapper";
-import { chartType } from "@Utils/ChartConfig";
+import { chartType } from "@Utils/Constants/ChartConfig";
 
 const Dashboard: FC = () => {
   return (

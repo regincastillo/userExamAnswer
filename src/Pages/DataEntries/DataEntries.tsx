@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState, useCallback } from "react";
 import { SnackBarProp } from "./DataEntries.type";
 import { Snackbar, Alert, Button, Typography } from "@mui/material";
 import { Wrapper } from "@Components/Wrapper/Wrapper";
+import { useFakeMutation } from "@Utils/Helpers/validation.helpers";
 import {
   entriesData,
   entriesLoaded,
@@ -38,6 +39,8 @@ const DataEntries: FC = () => {
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
   const [modatType, setModatType] = useState("Create");
   const [viewData, setViewData] = useState();
+
+  const mutateRow = useFakeMutation();
 
   const columns: GridColDef[] = [
     {
@@ -84,43 +87,6 @@ const DataEntries: FC = () => {
   ];
 
   const handleCloseSnackbar = () => setSnackbar(snackbarInit);
-
-  const isNullish = (obj: Entries) =>
-    Object.entries(obj)
-      // eslint-disable-next-line array-callback-return
-      .filter((item) => {
-        if (item[0] !== "Auth" && item[1] === "") {
-          return item;
-        }
-      })
-      .map((item) => item[0]);
-
-  const useFakeMutation = () => {
-    return useCallback(
-      (entries: Entries) =>
-        new Promise((resolve, reject) =>
-          setTimeout(() => {
-            let fields = isNullish(entries);
-            if (fields?.length > 0) {
-              reject(
-                new Error(
-                  `Error while saving Entrie: ${fields.toString()} ${
-                    fields?.length > 1 ? "are" : "is"
-                  } required`
-                )
-              );
-            } else {
-              dispatch(editDataEntries(entries));
-              resolve(entries);
-            }
-          }, 200)
-        ),
-      []
-    );
-  };
-
-  const mutateRow = useFakeMutation();
-
   const handleProcessRowUpdateError = useCallback((error: any) => {
     setSnackbar({ children: error.message, severity: "error", show: true });
   }, []);
@@ -133,6 +99,7 @@ const DataEntries: FC = () => {
       severity: "success",
       show: true,
     });
+    dispatch(editDataEntries(response));
     return response;
   };
 

@@ -1,9 +1,11 @@
 import React, { FC, useState } from "react";
-import { AppBar, Toolbar, Tabs, Tab } from "@mui/material";
+import { AppBar, Toolbar, Tabs, Tab, Theme } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { NavLink, useLocation } from "react-router-dom";
 
 const Header: FC = () => {
   const location = useLocation();
+  const mobile = useMediaQuery((theme: Theme) => theme.breakpoints.down("sm"));
   const [currentTab, setCurrentTab] = useState(location.pathname);
 
   return (
@@ -15,6 +17,7 @@ const Header: FC = () => {
             setCurrentTab(value);
           }}
           sx={{ flexGrow: 1 }}
+          variant={mobile ? "fullWidth" : "standard"}
         >
           <Tab
             label="Data Entries"
