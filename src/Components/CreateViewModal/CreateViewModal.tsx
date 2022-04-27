@@ -1,5 +1,6 @@
-import React, { FC, SyntheticEvent } from "react";
-import { Typography, Box, Button } from "@mui/material";
+import React, { FC, SyntheticEvent, useState } from "react";
+import { Typography, Box, Button, Alert } from "@mui/material";
+import { isNullish } from "@Utils/Helpers/validation.helpers";
 
 import Modal from "@mui/material/Modal";
 import { v4 as uuidv4 } from "uuid";
@@ -11,13 +12,12 @@ export const defaultProps: CreateViewModalProps = {
   type: "create",
 };
 
-
 const boxSx = {
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: '90%',
+  width: "90%",
   maxWidth: 500,
   bgcolor: "background.paper",
   boxShadow: 24,
@@ -33,6 +33,7 @@ const CreateViewModal: FC<CreateViewModalProps> = ({
   type,
   data,
 }) => {
+  const [erroMess, setErrorMess] = useState([]);
   const close = () => {
     if (onClose) {
       onClose();
@@ -41,17 +42,21 @@ const CreateViewModal: FC<CreateViewModalProps> = ({
   const handleSubmit = (e: SyntheticEvent) => {
     e.preventDefault();
     const target = e.target as typeof e.target & EntrieForm;
-
-    console.log("target", target?.Category?.value);
+    const formatted = {
+      id: uuidv4(),
+      API: target?.API?.value,
+      Description: target?.Description?.value,
+      Auth: target?.Auth?.value,
+      Category: target?.Category?.value,
+    };
+    const isNull = isNullish(formatted) as []
+    if (isNull?.length > 0) {
+      setErrorMess(isNull);
+      return;
+    }
 
     if (onProceed) {
-      onProceed({
-        id: uuidv4(),
-        API: target?.API?.value,
-        Description: target?.Description?.value,
-        Auth: target?.Auth?.value,
-        Category: target?.Category?.value,
-      });
+      onProceed(formatted);
       close();
     }
   };
@@ -65,6 +70,12 @@ const CreateViewModal: FC<CreateViewModalProps> = ({
     >
       <Box onSubmit={handleSubmit} sx={boxSx} component="form">
         <Typography variant="h6">{type} Entries</Typography>
+        {erroMess?.length > 0 && (
+          <Alert severity="error">
+            This {erroMess?.length > 1 ? "are" : "is"} required: {erroMess?.toString()}
+          </Alert>
+        )}
+
         <CustomInput
           fullWidth
           required={type === "create"}
@@ -79,7 +90,7 @@ const CreateViewModal: FC<CreateViewModalProps> = ({
           disabled={type === "view"}
           fullWidth
           name="API"
-          required={type === "Create"}
+          required={type === "create"}
           id="outlined-required"
           label="Api"
         />

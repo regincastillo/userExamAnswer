@@ -73,7 +73,6 @@ const DataEntries: FC = () => {
         return (
           <Button
             onClick={() => {
-              console.log("view", params?.row);
               setViewData(params?.row);
               setShowModal(true);
               setModatType("view");

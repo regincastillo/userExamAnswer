@@ -38,7 +38,6 @@ const defaultProps = {
 
 const Chart: FC<ChartProps> = ({ type }) => {
   const options = chartOption[type ];
-  console.log("options", options);
 
   const data = {
     labels,

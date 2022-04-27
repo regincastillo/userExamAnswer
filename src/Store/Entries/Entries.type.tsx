@@ -11,3 +11,9 @@ export interface Entries {
   Auth: string;
   Category: string;
 }
+
+
+export interface Action  {
+  payload: any;
+  type: string;
+}
